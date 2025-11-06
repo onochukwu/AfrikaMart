@@ -4,7 +4,7 @@ import { UsersService } from '../users/user.service';
 import * as bcrypt from 'bcryptjs';
 import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'crypto';
-import { MailService } from '.././mail/mail.service';
+import { MailService } from '../../mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +36,7 @@ export class AuthService {
       isVerified: false,
     });
 
-
+    const userId = (user as any)._id?.toString?.() ?? (user as any).id ?? undefined;
     const url = `${this.config.get('APP_URL')}/auth/verify-email?token=${verificationTokenPlain}&id=${user._id}`;
     await this.mailService.sendVerificationEmail(email, url);
 
@@ -77,7 +77,7 @@ export class AuthService {
     const refreshMatches = await bcrypt.compare(refreshToken, user.currentHashedRefreshToken);
     if (!refreshMatches) throw new UnauthorizedException('Invalid refresh token');
 
-    const payload = { sub: user._id.toString(), email: user.email, role: user.role };
+    const payload = { sub: user._id, email: user.email, role: user.role };
     const accessToken = this.jwtService.sign(payload, { secret: this.config.get('JWT_ACCESS_TOKEN_SECRET') });
     const newRefreshToken = this.jwtService.sign(payload, {
       secret: this.config.get('JWT_REFRESH_TOKEN_SECRET'),
@@ -103,15 +103,16 @@ export class AuthService {
 
   async requestPasswordReset(email: string) {
     const user = await this.usersService.findByEmail(email);
-    if (!user) return; 
+    const userId = (user as any)?._id?.toString?.() ?? (user as any)?.id ?? undefined;
+  if (!user) throw new Error('User not found');
 
     const resetTokenPlain = randomBytes(24).toString('hex');
     const resetTokenHashed = await this.hashData(resetTokenPlain);
     const expires = new Date(Date.now() + 1000 * 60 * 60); 
 
-    await this.usersService.setPasswordResetToken(user._id.toString(), resetTokenHashed, expires);
+    await this.usersService.setPasswordResetToken(userId, resetTokenHashed, expires);
 
-    const url = `${this.config.get('APP_URL')}/auth/reset-password?token=${resetTokenPlain}&id=${user._id}`;
+    const url = `${this.config.get('APP_URL')}/auth/reset-password?token=${resetTokenPlain}&id=${userId}`;
     await this.mailService.sendResetPasswordEmail(user.email, url);
     return;
   }

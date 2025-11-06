@@ -8,7 +8,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { ProfileController } from './profile.controller';
-import { MailService } from '.././mail/mail.service';
+import { MailService } from '../../mail/mail.service';
 
 @Module({
   imports: [

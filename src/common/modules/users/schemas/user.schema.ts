@@ -16,7 +16,7 @@ email: string;
 
 
 @Prop({ required: true })
-password: string; // hashed
+password: string; 
 
 
 @Prop({ default: 'buyer' })
@@ -28,11 +28,11 @@ isVerified: boolean;
 
 
 @Prop()
-verificationToken?: string; // hashed token or plain short token
+verificationToken?: string; 
 
 
 @Prop()
-resetPasswordToken?: string; // hashed token
+resetPasswordToken?: string; 
 
 
 @Prop()
@@ -40,7 +40,7 @@ resetPasswordExpires?: Date;
 
 
 @Prop()
-currentHashedRefreshToken?: string | null; // store hashed refresh token
+currentHashedRefreshToken?: string | null; 
 }
 
 
