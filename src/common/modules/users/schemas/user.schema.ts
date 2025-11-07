@@ -26,21 +26,18 @@ role: 'buyer' | 'seller' | 'admin';
 @Prop({ default: false })
 isVerified: boolean;
 
+ @Prop({ type: String, default: null })
+  verificationToken?: string | null;
 
-@Prop()
-verificationToken?: string; 
-
-
-@Prop()
-resetPasswordToken?: string; 
+  @Prop({ type: String, default: null })
+  resetPasswordToken?: string | null;
 
 
-@Prop()
-resetPasswordExpires?: Date;
+  @Prop({ type: Date, default: null })
+  resetPasswordExpires?: Date | null;
 
-
-@Prop()
-currentHashedRefreshToken?: string | null; 
+  @Prop({ type: String, default: null })
+  currentHashedRefreshToken?: string | null;
 }
 
 
