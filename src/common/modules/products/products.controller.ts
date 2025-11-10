@@ -57,10 +57,12 @@ export class ProductsController {
   @UseInterceptors(FileInterceptor('file', { storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } }))
   @ApiBearerAuth('access-token')
   async uploadImage(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
-    if (!file) throw new BadRequestException('File required');;
+    if (!file) throw new BadRequestException('File required');
+    const { url } = await this.svc.uploadImage(file.buffer, file.originalname, file.mimetype);
     const p = await this.svc.findById(id);
     p.images = p.images || [];
+    p.images.push(url);
     await p.save();
-    return { };
+    return { url };
   }
 }

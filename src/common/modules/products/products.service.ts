@@ -4,12 +4,13 @@ import { Model, Types } from 'mongoose';
 import { Product, ProductDocument } from './products.schema';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-
+import { S3Service } from '../../s3/s3.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<ProductDocument>
+    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    private s3: S3Service,
   ) {}
 
   async create(dto: CreateProductDto) {
@@ -83,6 +84,13 @@ export class ProductsService {
     return { items, total, page, limit, pages: Math.ceil(total / limit) };
   }
 
+  async uploadImage(fileBuffer: Buffer, filename: string, mimeType: string) {
+    const key = `products/${Date.now()}-${filename}`;
+    const url = await this.s3.uploadFile(key, fileBuffer, mimeType);
+    return { url, key };
+  }
+
+  // atomic bulk stock adjust (example)
   async adjustStockBulk(changes: { productId: string; delta: number }[]) {
     const session = await this.productModel.db.startSession();
     session.startTransaction();
