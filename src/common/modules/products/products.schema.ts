@@ -32,8 +32,8 @@ export class Product {
   @Prop({ type: Date, default: null })
   deletedAt?: Date | null;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', default: null })
-  supplierId?: Types.ObjectId | null;
+  @Prop({ type: Types.ObjectId, ref: 'Supplier', required: true })
+  supplierId: Types.ObjectId;
 
   @Prop({ type: String, default: 'active' })
   status?: 'active' | 'draft' | 'archived';
