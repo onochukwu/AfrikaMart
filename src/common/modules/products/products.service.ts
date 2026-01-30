@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Product, ProductDocument } from './products.schema';
+import { Product, ProductDocument } from './schemas/products.schema';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { S3Service } from '../../s3/s3.service';
@@ -90,7 +90,7 @@ export class ProductsService {
     return { url, key };
   }
 
-  // atomic bulk stock adjust (example)
+ 
   async adjustStockBulk(changes: { productId: string; delta: number }[]) {
     const session = await this.productModel.db.startSession();
     session.startTransaction();

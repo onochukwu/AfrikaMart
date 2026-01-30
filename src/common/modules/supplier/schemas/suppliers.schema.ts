@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { HydratedDocument,Types } from 'mongoose';
+
+export type SupplierDocument = HydratedDocument<Supplier>;
 
 export enum SupplierStatus {
   PENDING = 'PENDING',
@@ -30,10 +32,10 @@ export class Supplier {
   })
   status: SupplierStatus;
 
-  @Prop({ type: Boolean, default: true })
+  @Prop({ default: true })
   isActive: boolean;
 
-  @Prop({ type: Date, default: null })
+  @Prop({ default: null })
   approvedAt?: Date | null;
 }
 

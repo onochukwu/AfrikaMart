@@ -4,7 +4,7 @@ import { CartService } from './cart.service';
 import { CartController } from './cart.controller';
 import { Cart, CartSchema } from './schemas/cart.schema';
 import { CartItem, CartItemSchema } from './schemas/cart-item.schema';
-import { Product, ProductSchema } from '../products/products.schema';
+import { Product, ProductSchema } from '../products/schemas/products.schema';
 
 @Module({
   imports: [

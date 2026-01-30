@@ -39,7 +39,6 @@ export class ProductsController {
   @Patch(':id')
   @ApiBearerAuth('access-token')
   async update(@Param('id') id: string, @Body() dto: UpdateProductDto, @Req() req: any) {
-    // optional: enforce supplier ownership here
     return this.svc.update(id, dto);
   }
 

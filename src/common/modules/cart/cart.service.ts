@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Cart } from './schemas/cart.schema';
 import { CartItem } from './schemas/cart-item.schema';
-import { Product } from '../products/products.schema';
+import { Product } from '../products/schemas/products.schema';
 
 @Injectable()
 export class CartService {
