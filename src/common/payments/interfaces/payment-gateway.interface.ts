@@ -1,17 +1,22 @@
 import { InitializePaymentDto } from '../dto/initiate-payment.dto';
 
 export interface PaymentGateway {
-  initiatePayment(
-    dto: InitializePaymentDto,
-  ): Promise<{
+  initialize(dto: InitializePaymentDto): Promise<{
     paymentUrl: string;
     reference: string;
   }>;
 
   verifyPayment(reference: string): Promise<{
-    success: boolean;
-    metadata?: any;
+    status: 'success' | 'failed' | 'pending';
+    reference: string;
+    providerResponse?: any;
   }>;
 
-  refund(reference: string): Promise<boolean>;
+  refund(
+    reference: string,
+    amount?: number,
+  ): Promise<{
+    refunded: boolean;
+    reference: string;
+  }>;
 }

@@ -5,19 +5,17 @@ import { InitializePaymentDto } from '../dto/initiate-payment.dto';
 
 @Injectable()
 export class PaystackGateway implements PaymentGateway {
-  private readonly baseUrl = 'https://api.paystack.co';
-
-  async initiatePayment(dto: InitializePaymentDto) {
+  async initialize(dto: InitializePaymentDto) {
     const response = await axios.post(
-      `${this.baseUrl}/transaction/initialize`,
+      'https://api.paystack.co/transaction/initialize',
       {
         email: dto.email,
-        amount: dto.amount * 100, // kobo
+        amount: Math.round(dto.amount * 100),
         metadata: dto.metadata,
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
         },
       },
     );
@@ -29,32 +27,16 @@ export class PaystackGateway implements PaymentGateway {
   }
 
   async verifyPayment(reference: string) {
-    const response = await axios.get(
-      `${this.baseUrl}/transaction/verify/${reference}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
-        },
-      },
-    );
-
     return {
-      success: response.data.data.status === 'success',
-      metadata: response.data.data,
+      status: 'pending' as const,
+      reference,
     };
   }
 
-  async refund(reference: string) {
-    await axios.post(
-      `${this.baseUrl}/refund`,
-      { reference },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
-        },
-      },
-    );
-
-    return true;
+  async refund(reference: string, amount?: number) {
+    return {
+      refunded: false,
+      reference,
+    };
   }
 }

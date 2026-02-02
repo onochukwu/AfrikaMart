@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 
 import { PaymentProvider } from './enums/payment-provider.enum';
 import { InitializePaymentDto } from './dto/initiate-payment.dto';
@@ -16,27 +15,16 @@ export class PaymentsService {
     private readonly paypalGateway: PaypalGateway,
   ) {}
 
-  async initializePayment(dto: InitializePaymentDto) {
-    const reference = uuidv4();
-
+   initializePayment(dto: InitializePaymentDto) {
     switch (dto.provider) {
       case PaymentProvider.STRIPE:
-        return this.stripeGateway.initialize({
-          ...dto,
-          reference,
-        });
+        return this.stripeGateway.initialize(dto);
 
       case PaymentProvider.PAYSTACK:
-        return this.paystackGateway.initialize({
-          ...dto,
-          reference,
-        });
+        return this.paystackGateway.initialize(dto);
 
       case PaymentProvider.PAYPAL:
-        return this.paypalGateway.initialize({
-          ...dto,
-          reference,
-        });
+        return this.paypalGateway.initialize(dto);
 
       default:
         throw new BadRequestException('Unsupported payment provider');

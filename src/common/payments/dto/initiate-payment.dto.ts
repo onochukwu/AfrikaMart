@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNumber, IsObject, IsOptional } from 'class-validator';
+import { IsEmail, IsEnum, IsNumber, IsString, IsOptional, IsUrl } from 'class-validator';
 import { PaymentProvider } from '../enums/payment-provider.enum';
 
 export class InitializePaymentDto {
@@ -8,13 +8,21 @@ export class InitializePaymentDto {
   @IsNumber()
   amount: number;
 
-  @IsEmail()
-  email: string;
+  @IsString()
+  currency: string;
+
+  @IsString()
+  reference: string;
 
   @IsOptional()
-  @IsObject()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsUrl()
+  callbackUrl?: string;
+
+  @IsOptional()
   metadata?: Record<string, any>;
 
-
-  reference?: string;
 }

@@ -68,6 +68,8 @@ export class OrdersService {
     const payment = await this.paymentsService.initializePayment({
       provider: dto.paymentProvider,
       amount: total,
+      currency: 'USD',
+      reference: `ORDER_${order._id}`,
       email: dto.email,
       metadata: { orderId: order._id },
     });
