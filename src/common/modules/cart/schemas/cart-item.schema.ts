@@ -14,7 +14,6 @@ export class CartItem {
   @Prop({ required: true })
   quantity: number;
 
-  // Snapshot price at time of add/update
   @Prop({ required: true })
   price: number;
 

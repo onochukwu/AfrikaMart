@@ -1,8 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-
 import { PaymentProvider } from './enums/payment-provider.enum';
 import { InitializePaymentDto } from './dto/initiate-payment.dto';
-
 import { StripeGateway } from './gateways/stripe.gateway';
 import { PaystackGateway } from './gateways/paystack.gateway';
 import { PaypalGateway } from './gateways/paypal.gateway';

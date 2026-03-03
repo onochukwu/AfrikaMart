@@ -35,7 +35,7 @@ export class Supplier {
   @Prop({ default: true })
   isActive: boolean;
 
-  @Prop({ default: null })
+  @Prop({ type: Date, default: null })
   approvedAt?: Date | null;
 }
 

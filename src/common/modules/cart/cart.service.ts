@@ -17,7 +17,6 @@ export class CartService {
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
-  // Get or create cart
   async getCart(userId: string) {
     let cart = await this.cartModel.findOne({ userId });
     if (!cart) {
@@ -26,7 +25,6 @@ export class CartService {
     return cart;
   }
 
-  // Add item
   async addItem(userId: string, productId: string, quantity: number) {
     const product = await this.productModel.findById(productId);
     if (!product || product.isDeleted)
@@ -110,7 +108,6 @@ export class CartService {
     return { message: 'Item removed' };
   }
 
-  // Keep prices in sync
   async recalculateCart(cartId: Types.ObjectId) {
     const items = await this.cartItemModel.find({ cartId });
 

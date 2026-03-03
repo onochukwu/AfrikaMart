@@ -14,7 +14,7 @@ export class AuditLog {
   @Prop()
   resource?: string;
 
-  @Prop()
+@Prop({ type: Object })
   metadata?: Record<string, any>;
 }
 
